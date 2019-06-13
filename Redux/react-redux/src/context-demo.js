@@ -1,50 +1,47 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 
-//context是全局的，组件里声明，所有子元素可以直接获取
-class SideBar extends Component{
+//context是全局的，组件里声明，所有元素可以直接获取
+class Sidebar extends Component{
     render(){
         return(
             <div>
                 <p>侧边栏</p>
-                <NavBar />
+                <Navbar />
             </div>
         )
     }
 }
-class NavBar extends Component{
+class Navbar extends Component{
     static contextTypes = {
         user: PropTypes.string
     }
     render(){
         return(
-            <div>{this.context.user}的导航栏</div>
+            <div>
+                <p>姓名：{this.context.user}</p>
+            </div>
         )
     }
 }
-//另一种写法
-// function NvaBar(props,context){
 
-// }
-
-export class Page extends Component{
+export default class Page extends Component{
     static childContextTypes = {
         user: PropTypes.string
-    }
-    getChildContext(){
-        return {user:this.context.user}
     }
     constructor(props){
         super(props);
         this.state={
-            user: 'A'
+            user: 'sherry'
         }
+    }
+    getChildContext(){
+        return this.state
     }
     render(){
         return(
             <div>
-                <p>我是{this.state.user}</p>
-                <SideBar />
+                <Sidebar />
             </div>
         )
     }
