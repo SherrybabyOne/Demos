@@ -27,3 +27,6 @@ export function addNumAsync(){
         },1000)
     }
 }
+export function addNumDouble(){
+    return [{type: 'add'},{type: 'add'}]
+}
