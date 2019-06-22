@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>视频播放器</title>
+	<link rel="stylesheet" href="./index.css">
+	<link rel="stylesheet" href="./font-awesome.css">
+	<style type="text/css">
+		.player {
+			 position: relative;
+			 
+		}
+		.list {
+			width: 0px;
+			height: 100%;
+			background-color: rgba(0,0,0,.7);
+			position: absolute;
+			transform: translateX(-100%);
+			transition: all 1s linear;
+			overflow: hidden;
+		}
+		.player:hover .list {
+			width: 200px;
+			
+		}
+		.list a {
+			color: #fff;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<figure>
+		<figcaption>视频播放器</figcaption>
+		<div class="player">
+			<video src="./trailer.mp4"></video>
+			<div class="controls">
+				<!-- 播放/暂停 -->
+				<a href="javascript:;" class="switch fa fa-play"></a>
+				<!-- 全屏 -->
+				<a href="javascript:;" class="expand fa fa-expand"></a>
+				<!-- 进度条 -->
+				<div class="progress" width="430">
+					<div class="line"></div>
+				</div>
+				<!-- 时间 -->
+				<div class="timer">
+					<span class="current">00:00:00</span> /
+					<span class="total">00:00:00</span>
+				</div>
+				<!-- 声音 -->
+			</div>
+		</div>
+	</figure>
+	<script>
+
+		var video=document.querySelector("video");
+		var play=document.querySelector(".switch");
+		var total=document.querySelector(".total");
+		var current=document.querySelector(".current");
+		var line=document.querySelector(".line");
+		var progress=document.querySelector(".progress");
+		var expand=document.querySelector(".expand");
+		var current_time;
+        var controls = document.querySelector('.controls');
+
+        video.addEventListener('mouseenter',function(){
+            controls.style.opacity = 1;
+        })
+        video.addEventListener('mouseleave',function(){
+            controls.style.opacity = 0.5;
+        })
+		video.addEventListener("canplay", function(){
+			video.style.display="block";
+
+			//点击播放
+			play.onclick=function(){
+				if(video.paused){
+					video.play();
+				}else{
+					video.pause();
+				}
+				this.classList.toggle("fa-pause");
+			}
+
+			//显示总时长
+		    var total_time=video.duration;
+		    var h=parseInt(total_time/3600);
+		    var m=parseInt(total_time%3600/60);
+		    var s=parseInt(total_time%60);
+
+		    h=h>=10?h:"0"+h;
+		    m=m>=10?m:"0"+m;
+		    s=s>=10?s:"0"+s;
+		    total.innerHTML=h+":"+m+":"+s;
+
+
+		    //显示当前播放时间
+		    video.addEventListener("timeupdate",function(){
+		    	current_time=this.currentTime;
+
+		    	var h=parseInt(current_time/3600);
+			    var m=parseInt(current_time%3600/60);
+			    var s=parseInt(current_time%60);
+
+			    h=h>=10?h:"0"+h;
+			    m=m>=10?m:"0"+m;
+			    s=s>=10?s:"0"+s;
+			    current.innerHTML=h+":"+m+":"+s;
+
+			    //显示当前播放进度条
+			    var new_width=current_time/total_time*100+"%";
+			    line.style.width=new_width;
+		    });
+		    //跳播
+		    progress.onclick=function(e){
+
+		    	var percent=e.offsetX/this.getAttribute("width");
+
+		    	video.currentTime=percent*total_time;
+		    }
+
+		    //视频最大化
+		    expand.onclick=function(){
+		    	video.webkitRequestFullScreen();
+		    }
+		});
+
+		//点击播放列表
+		var a_btn=document.querySelectorAll(".list a");
+		for(var i=0;i<a_btn.length;i++){
+			a_btn[i].onclick=function(){
+				video.load();
+				play.classList.remove("fa-pause");
+				video.src=this.dataset["source"];
+			}
+		}
+	</script>
+</body>
+</html>

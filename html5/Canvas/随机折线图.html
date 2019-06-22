@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas width='600' height='400'></canvas>
+    <script>
+        //获取canvas画布对象
+        var canvas = document.querySelector('canvas');
+        //获取绘图上下文
+        var ctx = canvas.getContext('2d');
+
+        //绘制网格
+        draw1();
+        //绘制坐标系
+        draw2()
+
+        //随机生成点，首先要确定范围
+        //
+        //x:40~560
+        //
+        //y:40~360
+        //随便生成点的数量
+        var number = random(5,10);
+
+        var arr = [];
+
+        for(var i=0;i<number;i++){
+            var ox = random(40,560);
+            var oy = random(40,360);
+            arr.push({ox,oy})
+        }
+        //去重
+        arr = [...new Set(arr)];
+
+        //开始描点
+        ctx.fillStyle = 'red';
+        ctx.strokeStyle = 'red';
+        for(var i = 0;i<number;i++){
+            ctx.beginPath();
+
+            ctx.fillRect(arr[i].ox,arr[i].oy,8,8)
+        }
+        //开始连线
+        ctx.beginPath();
+        ctx.moveTo(arr[0].ox,arr[0].oy)
+        for(var i =1;i<number;i++){
+            ctx.lineTo(arr[i].ox,arr[i].oy)
+        }
+        ctx.stroke();
+
+        //绘制网格
+        function draw1(){
+            //每格的大小
+            var grids_size = 20;
+            //计算需要绘制多少竖线
+            var number_h = canvas.width/grids_size;
+
+            ctx.strokeStyle = '#ccc';
+            for(var i =0;i<number_h;i++){
+                ctx.beginPath();
+                ctx.moveTo(i*grids_size,0);
+                ctx.lineTo(i*grids_size,400);
+                ctx.stroke();
+            }
+
+            //计算需要绘制多少横线
+            var number_w = canvas.height/grids_size;
+            for(var i=0;i<number_w;i++){
+                ctx.beginPath();
+                ctx.moveTo(0,i*grids_size);
+                ctx.lineTo(600,i*grids_size);
+                ctx.stroke();
+            }
+        }
+        //绘制坐标系
+        function draw2(){
+            ctx.strokeStyle = 'blue';
+            ctx.beginPath();
+            ctx.moveTo(20,380);
+            ctx.lineTo(20,20);
+            ctx.lineTo(15,30);
+            ctx.lineTo(25,30);
+            ctx.lineTo(20,20);
+            ctx.stroke();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(20,380);
+            ctx.lineTo(580,380);
+            ctx.lineTo(570,375);
+            ctx.lineTo(570,385);
+            ctx.lineTo(580,380);
+            ctx.stroke();
+            ctx.fill()
+        }
+        //随机生成点的数量
+        function random(min,max){
+            return Math.floor((max-min)*Math.random())+min;
+        }
+    </script>
+</body>
+</html>

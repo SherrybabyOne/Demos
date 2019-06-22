@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>百度地图</title>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rFwb7Ow6y08zThgDXpGoovvtNIKkQIQO"></script>
+	<style type="text/css">
+		body, html,#allmap {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin:0;
+			font-family:"微软雅黑";
+	    }
+	</style>
+</head>
+<body>
+	
+   <div id="allmap"></div>
+
+   <script type="text/javascript">
+   	
+   	   window.navigator.geolocation.getCurrentPosition(suc,err);
+
+   	   function suc(position){
+
+   	   		var wd=position.coords.latitude;
+   	   		var jd=position.coords.longitude;
+
+   	   	    // 百度地图API功能
+			var map = new BMap.Map("allmap");
+			var point = new BMap.Point(jd,wd);
+			map.centerAndZoom(point, 15);
+			
+			//创建小狐狸
+			var pt = point;
+			var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157));
+			var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+			map.addOverlay(marker2);   
+   	   }
+
+   	   function err(meg){
+
+   	   }
+   </script>
+</body>
+</html>

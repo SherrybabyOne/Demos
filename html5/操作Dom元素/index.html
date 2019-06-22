@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+        .container {
+            width: 400px;
+            height: 600px;
+            margin: 100px auto;
+            border: 1px solid black;
+        }
+        ul {
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            width: 25%;
+            height: 58px;
+            text-align: center;
+            line-height: 58px;
+            color: #fff;
+            background-color: #01204f;
+        }
+        h2 {
+            text-align: center;
+        }
+        .title li:hover {
+            background-color: red;
+        }
+        .active {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <ul>
+                <li data-title="yl" class="active"><a href="#">娱乐新闻</a></li>
+                <li data-title="ty"><a href="#">体育新闻</a></li>
+                <li data-title="js"><a href="#">军事天地</a></li>
+                <li data-title="qc"><a href="#">汽车天下</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div style="display: block" class="yl">
+                <h2>娱乐新闻</h2>
+            </div>
+            <div style="display: none" class="ty">
+                <h2>体育新闻</h2>
+            </div>
+            <div style="display: none" class="js">
+                <h2>军事天地</h>
+            </div>
+            <div style="display: none" class="qc">
+                <h2>汽车天下</h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        var items = document.querySelectorAll('li');
+        for(var i = 0;i<items.length;i++){
+            items[i].onclick = function(){
+                //移除active
+                var active = document.querySelector('.active');
+                active.classList.remove('active');
+                //移除内容
+                document.querySelector(`.${active.dataset.title}`).style.display= 'none';
+                //添加类名
+                this.classList.add('active');
+                document.querySelector(`.${this.dataset.title}`).style.display = 'block'
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type='file' name=''>
+    <script>
+        var file_input = document.querySelector('input');
+        file_input.onchange = function(){
+            var file = this.files[0];
+
+            //判断后缀是否合法
+
+            var fileName = file.name.substring(file.name.lastIndexOf('.'));
+
+            var imgs=[".png",".jpg","gif",".ico"];
+
+            var flag = false;
+
+            for(var i=0;i<imgs.length;i++){
+                if(imgs[i] === fileName){
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag){
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(){
+                    var img = document.createElement('img')
+                    img.src = reader.result;
+                    document.body.appendChild(img)
+                }
+            }else{
+                alert('文件类型不一样，请重新选择!')
+            }
+
+        }
+    </script>
+</body>
+</html>

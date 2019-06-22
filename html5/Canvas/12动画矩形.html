@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext('2d');
+
+        //起始位置
+        var x = 0;
+        var step = 5;
+        var i = 1;
+        setInterval(function(){
+            //先清屏
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            //开始绘制图形
+            ctx.fillRect(x,100,100,200);
+            x += step*i;
+            if(x>canvas.width-100){
+                i = -1;
+            }else if(x<0){
+                i = 1;
+            }
+        },20)
+    </script>
+</body>
+</html>

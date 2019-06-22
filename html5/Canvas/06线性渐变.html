@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+		canvas {
+			border: 1px solid red;
+		}
+	</style>
+</head>
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        //获取画布对象
+        var canvas = document.querySelector('canvas')
+        //获取绘图上下文
+        var ctx = canvas.getContext('2d')
+
+        var grd = ctx.createLinearGradient(100,50,300,50);
+        //添加开始颜色
+        grd.addColorStop(0,'red');
+        grd.addColorStop(1,'blue');
+        ctx.strokeStyle = grd;
+        ctx.lineWidth = 50;
+        ctx.moveTo(100,50);
+        ctx.lineTo(300,50);
+        ctx.stroke();
+    </script>
+</body>
+</html>
