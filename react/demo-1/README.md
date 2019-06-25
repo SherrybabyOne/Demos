@@ -2,4 +2,3 @@
 <br>
 demo-1:函数绑定this
 demo-2:shouldComponentUpdate、PureComponent、immutable.js
-.
