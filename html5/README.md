@@ -15,8 +15,8 @@
 	  6. 一些API
  ☞ 好处：
 	  1. 跨平台
-	  	  例如：比如你开发了一款HTML5的游戏，你可以很轻易地移植到UC的开放平台、Opera的游戏中心、Facebook应用平台，甚至可以通过封装的技术发放到App Store或Google Play上，所以它的跨平台性非常强大，这也是大多数人对HTML5有兴趣的主要原因。
-
+	  	  例如：比如你开发了一款HTML5的游戏，你可以很轻易地移植到UC的开放平台、Opera的游戏中心、Facebook应用平台，
+        甚至可以通过封装的技术发放到App Store或Google Play上，所以它的跨平台性非常强大，这也是大多数人对HTML5有兴趣的主要原因。
  ☞ 缺点：
 	  1. pc端浏览器支持不是特别友好，造成用户体验不佳
 ```
@@ -32,8 +32,6 @@
   <aside></aside>
   <nav></nav>
   <section></section>
-  ....
-  http://www.w3school.com.cn/html/html5_semantic_elements.asp
 ```
 
 ### 多媒体标签及属性介绍
@@ -47,9 +45,8 @@
 	 属性：controls 显示控制栏
 	 属性：autoplay 自动播放	
 	 属性：loop  设置循环播放
- ☞ video标签支持的格式    http://www.w3school.com.cn/html5/html_5_video.asp
+ ☞ video标签支持的格式
  ☞ 多媒体标签在网页中的兼容效果方式
-
 	 <video>
 		<source src="code/多媒体标签/trailer.mp4">
 		<source src="trailer.ogg">
@@ -96,16 +93,6 @@
     multiple：	 实现多选效果
     *placeholder ： 占位符  （提示信息）
     *required：    必填项
-
-作业：
-	◆自己解决required自定义提示信息
-	◆预习和复习
-
-
-留下的疑问：
-	◆ 如何修改表单控件中的默认提示信息 
-		 1. 表单验证触发oninvalid事件
-		 2. 通过setCustomValidity方法设置修改内容
 ```
 
 ## HTMl5中的API
@@ -161,14 +148,12 @@
 	  readAsDataURL		   ---将文件读取为DataURL
 
  ☞  FileReader 提供的事件模型
-	 onabort	    中断时触发
+	   onabort	    中断时触发
      onerror	    出错时触发
      onload	    文件读取成功完成时触发
      onloadend	读取完成触发，无论成功或失败
      onloadstart	读取开始时触发
      onprogress	读取中
-
- ☞ 分析读取图片小案例
 ```
 
 ### 获取网络状态
@@ -226,12 +211,6 @@
 
 ### 操作多媒体
 
-```html
-http://www.w3school.com.cn/html5/html5_ref_audio_video_dom.asp
-
-作业：
-	 完成一个在线音乐播放器或者视频播放器
-```
 
 ## Canvas画布
 
