@@ -1,6 +1,14 @@
-const a = {
-    name: 'sherry',
-    0: 'aaa',
-    this: 'a'
+// const a = {
+//     name: 'sherry',
+//     0: 'aaa',
+//     this: 'a'
+// }
+// console.log(a['this'])
+
+// const a = new Object()
+// console.log(1=={})
+var fn = function(){
+    return [12,31,1]
 }
-console.log(a['this'])
+var a = new fn();
+console.log(a)
