@@ -136,6 +136,7 @@
     ```js
         function fn(){
             
+            
         }
         var f1=new fn();    //f1就是fn的实例
 
