@@ -42,3 +42,8 @@
     //  p1的原型对象是谁呢？
     //  -->首先要知道p1是谁创建的？    -->Person
     //  -->所以p1的原型对象时：     Person.prototype
+    function Student(name){
+        return name
+    }
+    const a = new Student('a')
+    console.log(a)
