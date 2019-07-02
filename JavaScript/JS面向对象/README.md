@@ -424,12 +424,67 @@ function Person(name,age,address){
 + 防止变量被破坏
 
 ### 函数的4种调用方式
++ 在`ES6之前`，函数内部的this是由该函数的调用方式决定的
+    - 函数内部的this跟大小写、书写位置无关
 + 1、函数调用
+```js
+    var age=18;
+    var p={
+        age:15
+        say:function(){
+            console.log(this.age);//window.age:18
+        }
+    }
+    var s1=p.say
+    s1();       //函数调用
+```
+函数调用时函数内部的this指向**window**
 + 2、方法调用
+```js
+    var age=18;
+    var p={
+        age:15
+        say:function(){
+            console.log(this.age);//this:p
+            //this.age->p.age:15
+        }
+    }
+    p.say()//方法调用
+```
 + 3、new调用(构造函数)
+```js
+    var age=18;
+    var p={
+        age:15
+        say:function(){
+            //this：say构造函数的实例,实例中并没有age属性，值为：undefined
+            console.log(this.age);
+        }
+    }
+    new p.say()//构造函数调用
+    //相当于：
+    var s1=p.say;
+    new s1();
+```
+通过new关键字来调用，函数内部的this指向该构造函数的实例。
 + 4、上下文方式(call、apply、bind)
+```js
+    var length=21;
+    function f1(){
+        console.log(this.length);
+    }
+    f1.call([1,3,5])    //3
+    f1.apply(this)      //window.length：21
+    f1.call(5)          //undefined
+```
+- 上下文模式应用场景：
+    - 一些需要指定this的情况，比如$.each方法回调函数内部的this
+    - 判断数据类型：
+        - Object.prototype.toString.call(1);
+
 
 + 在ES6的箭头函数之前的时代，想要判断一个函数内部的this指向谁，就是根据上面的四种方式来决定的
+
 
 ### es6内容
 + 1、解构赋值   
