@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .loading {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            width: 100px;
+            height: 75px;
+            line-height: 75px;
+            vertical-align: middle;
+        }
+        .content > span {
+            width: 8px;
+            height: 10px;
+            display: inline-block;
+            border-radius: 5px;
+            vertical-align: middle;
+            background-image: linear-gradient(
+                to top,
+                #00F4AA,
+                #0E85FF
+            )
+        }
+        .content > span:nth-child(1){
+            animation: loadingAnimation1 1s ease infinite;
+        }
+        .content > span:nth-child(2) {
+            animation: loadingAnimation2 1s ease infinite ;
+        }
+        .content > span:nth-child(3) {
+            animation: loadingAnimation3 1s ease infinite ;
+        }
+        .content > span:nth-child(4) {
+            animation: loadingAnimation4 1s ease infinite ;
+        }
+        .content > span:nth-child(5) {
+            animation: loadingAnimation5 1s ease infinite ;
+        }
+        /*
+            Animation
+        */
+        @keyframes loadingAnimation1 {
+            0% {height:10px}
+            10% {height:20px}
+            50% {height:10px}
+        }
+        @keyframes loadingAnimation2 {
+            0% {height:10px}
+            20% {height:38px}
+            60% {height:10px}
+        }
+        @keyframes loadingAnimation3 {
+            0% {height:10px}
+            30% {height:75px}
+            70% {height:10px}
+        }
+        @keyframes loadingAnimation4 {
+            0% {height:10px}
+            40% {height:38px}
+            80% {height:10px}
+        }
+        @keyframes loadingAnimation5 {
+            0% {height:10px}
+            50% {height:20px}
+            90% {height:10px}
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="content">
+            <span class="a"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</body>
+</html>
