@@ -21,6 +21,10 @@
             padding: 15px;
             min-height: 200px;
         }
+        .container {
+            display: flex;
+            flex: 1;
+        }
         .flexHeader {
             background-color: #105B63;
         }
@@ -63,9 +67,11 @@
 <body>
     <div class="flexWrapper">
         <div class="flexHeader flexItems">Header</div>
-        <div class="flexSideOne flexItems">SideOne</div>
-        <div class="flexContent flexItems">Content</div>
-        <div class="flexSideTwo flexItems">SideTwo</div>
+        <div class="container">
+            <div class="flexSideOne flexItems">SideOne</div>
+            <div class="flexContent flexItems">Content</div>
+            <div class="flexSideTwo flexItems">SideTwo</div>
+        </div>
         <div class="flexFooter flexItems">Footer</div>
     </div>
 </body>
