@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .flexWrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        .flexItems {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            min-height: 200px;
+        }
+        .flexHeader {
+            background-color: #105B63;
+        }
+        .flexContent {
+            background-color: #FFFAD5;
+        }
+        .flexSideOne {
+            background-color: #FFD34E;
+        }
+        .flexSideTwo {
+            background-color: #DB9E36;
+        }
+        .flexFooter {
+            background-color: #BD4932;
+        }
+        @media screen and (min-width: 600px) {
+            .flexWrapper {
+                display: flex;
+                flex-flow: row wrap;
+                height: 100%;
+            }
+            .flexHeader { 
+                width: 100%;
+            }
+            .flexSideOne {
+                width: 150px;
+            }
+            .flexContent {
+                flex: 1;
+            }
+            .flexSideTwo {
+                width: 150px;
+            }
+            .flexFooter {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flexWrapper">
+        <div class="flexHeader flexItems">Header</div>
+        <div class="flexSideOne flexItems">SideOne</div>
+        <div class="flexContent flexItems">Content</div>
+        <div class="flexSideTwo flexItems">SideTwo</div>
+        <div class="flexFooter flexItems">Footer</div>
+    </div>
+</body>
+</html>
