@@ -9,9 +9,17 @@
         html,body {
             margin: 0;
             padding: 0;
+        }
+        html {
             height: 100%;
         }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }   
         .flexWrapper {
+            flex: 1;
             display: flex;
             flex-direction: column;
         }
@@ -20,10 +28,6 @@
             align-items: center;
             padding: 15px;
             min-height: 200px;
-        }
-        .container {
-            display: flex;
-            flex: 1;
         }
         .flexHeader {
             background-color: #105B63;
@@ -44,7 +48,11 @@
             .flexWrapper {
                 display: flex;
                 flex-flow: row wrap;
-                height: 100%;
+            }
+            .container {
+                display: flex;
+                flex: 1;
+                height: 1600px;
             }
             .flexHeader { 
                 width: 100%;
