@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: block;
+        }
+        .text {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            font-size: 50px;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            position: absolute;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <div class="text">艾浩的动态粒子效果背景</div>
+    <script>
+        class Circle {
+            constructor(x,y) {
+                //圆心的坐标x、y
+                this.x = x;
+                this.y = y;
+                //圆的随机半径r
+                this.r = Math.random()*10;
+                //圆的移动速度
+                this._mx = Math.random()*2 -1;
+                this._my = Math.random()*2 -1;
+            }
+            //画圆圈
+            drawCircle(){
+                ctx.beginPath();
+                ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+                ctx.fillStyle = 'rgba(204, 204, 204, 0.3)';
+                ctx.fill();
+            }
+            //连线
+            drawLine(ctx,_circle){
+                let dx = this.x - _circle.x,
+                    dy = this.y - _circle.y,
+                    d = Math.sqrt(dx*dx + dy*dy);
+                if(d < 150){
+                    ctx.beginPath();
+                    ctx.moveTo(this.x,this.y);
+                    ctx.lineTo(_circle.x,_circle.y);
+                    ctx.strokeStyle = 'rgba(204, 204, 204, 0.3)';
+                    ctx.stroke();
+                }
+            }
+            //移动
+            move(){
+                this._mx = (this.x<w && this.x>0) ? this._mx : -this._mx;
+                this._my = (this.y<h && this.y>0) ? this._my : -this._my;
+                this.x += this._mx;
+                this.y += this._my;
+            }
+        }
+
+        class currentCircle extends Circle {
+            constructor(x,y){
+                super(x,y);
+                this.r = 8;
+            }
+            //鼠标画圆圈
+            drawCircle(){
+                ctx.beginPath();
+                ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+                ctx.fillStyle = 'rgba(255, 77, 54, 0.6)';
+                ctx.fill();
+            }
+        }
+
+        //更新页面用requestAnimationFrame替代setTimeout
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+        
+        let canvas = document.querySelector('canvas'),
+            ctx = canvas.getContext('2d'),
+            circles = [],
+            w = canvas.width = canvas.offsetWidth,
+            h = canvas.height = canvas.offsetHeight,
+            current_circle = new currentCircle(0,0);
+        
+        let draw = function(){
+            //清屏
+            ctx.clearRect(0,0,w,h);
+            //圆
+            for(let i = 0; i<circles.length; i++){
+                circles[i].move();
+                circles[i].drawCircle();
+                for(let j = i+1; j<circles.length; j++){
+                    circles[i].drawLine(ctx,circles[j])
+                }
+            }
+            //鼠标
+            if(current_circle.x && current_circle.y){
+                current_circle.drawCircle();
+                for(let i = 0; i<circles.length; i++){
+                    current_circle.drawLine(ctx,circles[i])
+                }
+            }
+            requestAnimationFrame(draw)
+        }
+
+        let init = function(num){
+            for(let i = 0; i<num; i++){
+                circles.push(new Circle(Math.random()*w , Math.random()*h))
+            };
+            draw();
+        }
+
+        window.addEventListener('load',init(60))
+        window.onmousemove = function(e){
+            e = e || window.event;
+            current_circle.x = e.clientX;
+            current_circle.y = e.clientY;
+        }
+        window.onmouseout = function(e){
+            current_circle.x = null;
+            current_circle.y = null;
+        }
+    </script>
+</body>
+</html>
