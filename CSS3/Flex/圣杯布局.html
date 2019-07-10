@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            min-width: 600px;
+        }
+        .header {
+            background-color: #105B63;
+        }
+        .container {
+            padding: 0 200px 0 200px;
+        }
+        .container > div {
+            float: left;
+        }
+        .main {
+            width: 100%;
+            background-color: #DB9E36;
+        }
+        .left {
+            width: 200px;
+            margin-left: -100%;
+            position: relative;
+            right: 200px;
+            background-color: #FFFAD5;
+        }
+        .right {
+            width: 200px;
+            margin-right: -200px;
+            background-color: #FFD34E;
+        }
+        .footer {
+            clear: both;
+            background-color: #BD4932;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Header</div>
+    <div class="container">
+        <div class="main">Main</div>
+        <div class="left">Left</div>
+        <div class="right">Right</div>
+    </div>
+    <div class="footer">Footer</div>
+</body>
+</html>
