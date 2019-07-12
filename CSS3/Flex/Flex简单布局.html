@@ -9,50 +9,38 @@
         html,body {
             margin: 0;
             padding: 0;
-            min-width: 650px;
         }
         .header {
             height: 200px;
             background-color: #105B63;
         }
         .container {
-            padding: 0 200px 0 200px;
-        }
-        .container > div {
-            position: relative;
-            float: left;
-        }
-        .main {
             height: 200px;
-            width: 100%;
-            background-color: #DB9E36;
+            display: flex;
         }
         .left {
             width: 200px;
-            height: 200px;
-            margin-left: -100%;
-            right: 200px;
             background-color: #FFFAD5;
+        }
+        .main {
+            flex: 1;
+            background-color: #FFD34E;
         }
         .right {
             width: 200px;
-            height: 200px;
-            margin-left: -200px;
-            left: 200px;
-            background-color: #FFD34E;
+            background-color: #BD4932;
         }
         .footer {
             height: 200px;
-            clear: both;
-            background-color: #BD4932;
+            background-color: #DB9E36;
         }
     </style>
 </head>
 <body>
     <div class="header">Header</div>
     <div class="container">
-        <div class="main">Main</div>
         <div class="left">Left</div>
+        <div class="main">Main</div>
         <div class="right">Right</div>
     </div>
     <div class="footer">Footer</div>
