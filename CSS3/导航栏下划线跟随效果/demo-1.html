@@ -25,7 +25,27 @@
             padding: 20px;
             list-style: none;
             cursor: pointer;
+            position: relative;
         }
+        li::before {
+            content: '';
+            width: 0;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            border-bottom: 2px solid #000;
+            transition: all 0.2s linear;
+        }
+        li:hover::before {
+            width: 100%;
+            left: 0;
+        }
+        li:active {
+            background-color: #000;
+            color: #fff;
+        }
+
     </style>
 </head>
 <body>
