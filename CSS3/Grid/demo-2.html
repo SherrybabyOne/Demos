@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .parent {
+            width: 500px;
+            height: 500px;
+            display: grid;
+            grid-template:100px 100px 100px / 100px 100px 100px;
+            grid-gap: 10px;
+            justify-content: space-around;
+            align-content: space-between;
+            grid-template-areas: '. . .'
+                                 '. . .'
+                                 '. . i'
+        }
+        /* 指定起始行，结束行，起始列，结束列 */
+        .child:first-child {
+            grid-row-start: 1;
+            grid-row-end: 2;
+            grid-column-start: 1;
+            grid-column-end: 3;
+            background: red;
+        }
+
+        /* 使用缩写形式 */
+        .child:nth-child(2) {
+            grid-row: 2/3;
+            grid-column: 2/4;
+            background: yellow;
+        }
+
+        /* 直接指定区域名 */
+        .child:nth-child(3) {
+            grid-area: i;    
+            background: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        <div class="child"></div>
+        <div class="child"></div>
+        <div class="child"></div>
+    </div>
+</body>
+</html>
