@@ -20,8 +20,7 @@ figcaption {
 	height: 360px;
 	margin: 0 auto;
 	border-radius: 4px;
-	background-color: #000;
-	/* background: #000 url(../images/loading.gif) center/300px no-repeat; */
+	background: #000 url(../images/loading.gif) center/300px no-repeat;
 	position: relative;
 }
 
@@ -43,9 +42,9 @@ video {
 	opacity: 1;
 }
 
-.player:hover .controls {
+/* .player:hover .controls {
 	opacity: 1;
-}
+} */
 .controls {
 	opacity: 0.5;
 }
