@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .parent {
+            width: 500px;
+            height: 500px;
+            display: grid;
+            grid-template:100px 100px 100px / 100px 100px 100px;
+            grid-gap: 10px;
+            justify-content: space-around;
+            align-content: space-between;
+            grid-template-areas: '. . .'
+                                 '. . .'
+                                 '. . i'
+        }
+        .child:nth-child(1) {
+            justify-self: start;
+            align-self: start;
+            background-color: yellow;
+        }
+        .child:nth-child(2) {
+            justify-self: center;
+            align-self: end;
+            background-color: black;
+        }
+        .child:nth-child(3) {
+            place-self: center center;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        <div class="child" style="width: 50px;height: 50px"></div>
+        <div class="child" style="width: 50px;height: 50px"></div>
+        <div class="child" style="width: 50px;height: 50px"></div>
+    </div>
+</body>
+</html>

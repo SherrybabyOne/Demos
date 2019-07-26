@@ -3,29 +3,30 @@
  * @return {string[]}
  */
 var letterCombinations = function(digits) {
-    const map = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
-    let num = digits.split('');
-    let code = [];
-    num.forEach( item => {
-        if(map[item]) {
-            code.push(map[item]);
-        }
-    })
-    let comb = arr => {
-        let tmp = [];
-        for(let i = 0,il =arr[0].length; i<il; i++) {
-            for(let j = 0,jl=arr[1].length; j<jl; j++) {
-                tmp.push(`${arr[0][i]}${arr[1][j]}`)
-            }
-        }
-        arr.splice(0,2,tmp);
-        if(arr.length > 1) {
-            comb(arr)
+    const originData = {
+        '2': ['a','b','c'],
+        '3': ['d','e','f'],
+        '4': ['g','h','i'],
+        '5': ['j','k','l'],
+        '6': ['m','n','o'],
+        '7': ['p','q','r','s'],
+        '8': ['t','u','v'],
+        '9': ['w','x','y','z'],
+    };
+    let res = [], tmpRes = [];
+    for(let i = 0; i<digits.length; i++) {
+        if(res.length === 0) {
+            res = originData[digits[0]];
         }else {
-            return tmp
+            let digitsArr = originData[digits[i]];
+            res.forEach(item => {
+                digitsArr.forEach( digitsItem => {
+                    tmpRes.push(item + digitsItem)
+                })
+            })
+            res = tmpRes;
+            tmpRes = [];
         }
-        return arr[0];
     }
-    return comb(code);
-};
-console.log(letterCombinations('23'))
+    return res;
+}
