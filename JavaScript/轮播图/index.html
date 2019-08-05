@@ -94,50 +94,110 @@
             <img src="./img/1.jpg" alt="1">
         </div>
         <div class="buttons">
-            <span index='1' class="on"></span>
-            <span index='2'></span>
-            <span index='3'></span>
-            <span index='4'></span>
-            <span index='5'></span>
+            <span data-index='1' class="on"></span>
+            <span data-index='2'></span>
+            <span data-index='3'></span>
+            <span data-index='4'></span>
+            <span data-index='5'></span>
         </div>
         <a href="javascript:;" id="prev" class="arrow">&lt;</a>
         <a href="javascript:;" id="next" class="arrow">&gt;</a>
     </div>
     <script>
         window.onload = function () {
-            var container = document.getElementById('container');
+            var container = document.getElementsByClassName('container')[0];
             var list = document.getElementsByClassName('list')[0];
+            var buttons = document.getElementsByClassName('buttons')[0].getElementsByTagName('span');
             var index = 1;
             var len = 5;
+            var animated = false;
+            var timer;
             var prev = document.getElementById('prev');
             var next = document.getElementById('next');
 
             function animate (offset) {
-                var left = parseInt(list.style.left) + offset;
-                list.style.left = parseInt(list.style.left) +offset + 'px';
-                if(left< (-600 * len)) {
-                    list.style.left = '-600px'
+                animated = true;
+                var newLeft = parseInt(list.style.left) + offset;
+                //位移总时间
+                var time = 300;
+                //位移间隔时间
+                var inteval = 10;
+                //每次位移量
+                var speed = offset/(time/inteval);
+                
+                function go () {
+                    if( (speed<0 && newLeft<parseInt(list.style.left)) || (speed>0 && newLeft>parseInt(list.style.left))) {
+                        list.style.left = parseInt(list.style.left) + speed + 'px';
+                        setTimeout(go,inteval)
+                    }else {
+                        list.style.left = newLeft + 'px';
+                        if(newLeft < (-600 * len)) {
+                            list.style.left = '-600px'
+                        }
+                        if(newLeft > -600){
+                            list.style.left = -600 * len + 'px';
+                        }
+                    }
+                    animated = false;
                 }
-                if(left > -600){
-                    list.style.left = -600 * len + 'px';
+                go();
+            }
+            function play () {
+                timer = setInterval(function(){
+                    next.onclick()
+                },3000)
+            }
+            function stop () {
+                clearInterval(timer);
+            }
+            //按钮显示函数
+            function showButton () {
+                for(let i = 0; i<buttons.length; i++) {
+                    if( buttons[i].className === 'on') {
+                        buttons[i].className = '';
+                        break;
+                    }
+                }
+                buttons[index-1].className = 'on'
+            }
+            //按钮点击函数
+            for(let i = 0; i<buttons.length; i++) {
+                buttons[i].onclick = function () {
+                    if(buttons[i].className === 'on') return;
+                    let myIndex = buttons[i].dataset.index;
+                    let offset = -600 * (myIndex - index);
+                    animate(offset);
+                    index = myIndex;
+                    showButton();
                 }
             }
             prev.onclick = function () {
-                if(index === 1) {
-                    index = 5;
-                }else {
-                    index--
+                if(!animated) {
+                    if(index === 1) {
+                        index = 5;
+                    }else {
+                        index--
+                    }
+                    animate(+600);
+                    showButton();
                 }
-                animate(+600)
             }
             next.onclick = function () {
-                if(index === 5) {
-                    index = 1;
-                }else {
-                    index++
+                if(!animated) {
+                    if(index === 5) {
+                        index = 1;
+                    }else {
+                        index++
+                    }
+                    animate(-600);
+                    showButton();
                 }
-                animate(-600)
             }
+
+            container.onmouseover = stop;
+            container.onmouseout = play;
+
+            play();
         }
     </script>
 </body>
