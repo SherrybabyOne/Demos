@@ -172,8 +172,6 @@ background-size：     规定背景图片的尺寸。
 ### 过渡
 
 ```css
- https://www.cnblogs.com/afighter/p/5731293.html
-
  补间动画
 
 	/* 设置哪些属性要参与到过渡动画效果中： all */
@@ -221,7 +219,7 @@ background-size：     规定背景图片的尺寸。
 		animation-direction: alternative;
 		/* 设置动画延时 */
 		animation-delay: 1s;
-		/* 设置动画结束的状态 */
+		/* 设置动画填充模式 */
 		animation-fill-mode: forwards;
 		/* 动画暂停 */
 		animation-play-state: paused;

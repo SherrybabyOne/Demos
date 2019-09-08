@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            margin: 200px auto;
+            height: 20px;
+            border: 1px solid;
+            animation: rotate 2.5s infinite normal, color 2s infinite normal,width 3s infinite alternate;
+        }
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes color {
+            20% {
+                background-color: #f91;
+            }
+            80% {
+                background-color: #0ff;
+            }
+        }
+        @keyframes width {
+            0% {
+                width: 88px;
+            }
+            100% {
+                width: 300px;
+            }
+        }
+    </style>
+<body>
+    <div></div>
+</body>
+</html>
