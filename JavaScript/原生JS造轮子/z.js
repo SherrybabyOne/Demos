@@ -33,3 +33,14 @@ console.log(
   aihao,
   Student.prototype.__proto__ === Person.prototype
 )
+
+function test(a,b,c,d) { 
+  var arg = Array.prototype.slice.call(arguments,1); 
+  console.log(arg); 
+}
+test("a","b","c","d"); //b,c,d
+
+const test1 = [1, 2, 3]
+console.log(
+  test1.map(item => item * 2)
+)
