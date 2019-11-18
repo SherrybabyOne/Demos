@@ -1,6 +1,6 @@
 console.log(
-  +0 === -0,
-  NaN === NaN
+  +0 === -0,  //true
+  NaN === NaN //false
 )
 
 function objectIs(x, y) {
