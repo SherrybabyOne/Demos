@@ -6,7 +6,7 @@ const newOperatoe = (ctor, ...args) => {
   const res = ctor.apply(obj, args);
   const isObject = typeof res === 'object' && res !== null;
   const isFunction = typeof res === 'function';
-  return isObject || isFunction ? res : obj;l
+  return isObject || isFunction ? res : obj;
 }
 
 function Person(name) {
