@@ -18,19 +18,19 @@
             // 将数据读取成二进制   方式
             // reader.readAsBinaryString(file)
             // reader.onload=function(){
-	  	   	//     console.log(reader.result);
+	  	   	//     console.log(this.result);
 	  	   	// }
 
             // 将数据读取成文本形式
 	  	   	reader.readAsText(file);
 	  	   	reader.onload=function(){
-	  	   	    console.log(reader.result);
+	  	   	    console.log(this.result);
 	  	   	}
 
             // 将数据读取成url形式
             // reader.readAsDataURL(file)
             // reader.onload = function(){
-            //     console.log(reader.result)
+            //     console.log(this.result)
             // }
         }
     </script>
