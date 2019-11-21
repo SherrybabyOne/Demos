@@ -9,15 +9,21 @@ Function.prototype.bind = function(context, ...args) {
   // 保存this的值
   var self = this;
 
-  var fBound = function() {
-    self.apply(
-      this instanceof self ? this : context,
-      args.concat(Array.prototype.slice.call(arguments))
-    )
+  return function F() {
+    if(this instanceof F) {
+      return new self(...args, ...arguments)
+    }
+    return self.apply(context, args.concat(arguments))
   }
+  // var fBound = function() {
+  //   self.apply(
+  //     this instanceof self ? this : context,
+  //     args.concat(Array.prototype.slice.call(arguments))
+  //   )
+  // }
 
-  fBound.prototype = Object.create(self.prototype)
-  return fBound;
+  // fBound.prototype = Object.create(self.prototype)
+  // return fBound;
 }
 
 function test() {
