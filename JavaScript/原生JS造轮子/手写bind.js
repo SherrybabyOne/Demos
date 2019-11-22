@@ -10,20 +10,12 @@ Function.prototype.bind = function(context, ...args) {
   var self = this;
 
   return function F() {
+    // 考虑new的情况
     if(this instanceof F) {
       return new self(...args, ...arguments)
     }
     return self.apply(context, args.concat(arguments))
   }
-  // var fBound = function() {
-  //   self.apply(
-  //     this instanceof self ? this : context,
-  //     args.concat(Array.prototype.slice.call(arguments))
-  //   )
-  // }
-
-  // fBound.prototype = Object.create(self.prototype)
-  // return fBound;
 }
 
 function test() {
