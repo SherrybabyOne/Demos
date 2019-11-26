@@ -50,9 +50,11 @@ const cloneDeep2 = (source) => {
       res = parent[key] = {};
     }
     if(hash.has(data)) {
-      res[key] = hash.get(data);
+      parent[key] = hash.get(data);
+      continue;
     }
     hash.set(data, res);
+    console.log('===')
     for(let k in data) {
       if(Object.prototype.hasOwnProperty.call(data, k)) {
         if(isObject(data[k])) {
@@ -71,3 +73,12 @@ const cloneDeep2 = (source) => {
 }
 const c = cloneDeep2(a)
 console.log(c)
+
+const d = {
+  a: 'a',
+  bbb: {
+    bb: 'bb'
+  }
+}
+d.cc = d;
+console.log(cloneDeep2(d))
