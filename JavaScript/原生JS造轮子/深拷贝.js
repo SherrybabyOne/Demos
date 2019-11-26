@@ -54,7 +54,6 @@ const cloneDeep2 = (source) => {
       continue;
     }
     hash.set(data, res);
-    console.log('===')
     for(let k in data) {
       if(Object.prototype.hasOwnProperty.call(data, k)) {
         if(isObject(data[k])) {
