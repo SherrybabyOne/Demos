@@ -9,3 +9,5 @@ function Children() {
 }
 Children.prototype = Object.create(Parent.prototype);
 Children.prototype.constructor = Children;
+// 继承父类的静态方法
+Object.setPrototypeOf(Children, Parent);
