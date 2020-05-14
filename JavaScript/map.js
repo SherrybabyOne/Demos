@@ -6,9 +6,9 @@ Array.prototype.map = function(callback, thisArg) {
   if (Object.prototype.toString.call(callback) !== '[object Function]') {
     throw new TypeError(callbackfn + 'is not a function');
   }
-  const res = [];
   // 保证len为数字且是正整数
   const len = this.length >>> 0;
+  const res = new Array(len);
   for (let i = 0; i < len; i++) {
     if (i in this) {
       const kValue = this[i];
