@@ -1,20 +1,16 @@
-process.nextTick(function() {
-  console.log('a')
-})
+class A {
+  constructor() {
+    this.a = 'a';
+  }
+  cal() {
+    console.log(this.a);
+  }
+}
 
-process.nextTick(function() {
-  console.log('b')
-})
-
-setImmediate(function() {
-  console.log('c')
-  process.nextTick(function() {
-    console.log('d')
-  })
-})
-
-setImmediate(function() {
-  console.log('e')
-})
-
-console.log('f')
+const test = new A();
+console.log(Object.getPrototypeOf(test));
+console.log(
+  Object.getOwnPropertyDescriptor(Object.getPrototypeOf(test), 'cal'),
+  Reflect.ownKeys(Object.getPrototypeOf(test))
+)
+// console.log(test.__proto__.constructor);
