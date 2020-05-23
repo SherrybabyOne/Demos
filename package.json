@@ -1,0 +1,23 @@
+{
+  "name": "Demos",
+  "version": "1.0.0",
+  "description": "原生学习例子",
+  "main": "z.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SherrybabyOne/Demos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SherrybabyOne/Demos/issues"
+  },
+  "homepage": "https://github.com/SherrybabyOne/Demos#readme",
+  "dependencies": {
+    "node-rsa": "^1.0.8"
+  }
+}
