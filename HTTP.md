@@ -441,9 +441,46 @@ SSL 即安全套接层（Secure Sockets Layer），在 OSI 七层模型中处于
 
 ### 传统RSA握手
 传统的TLS握手就是RSA握手，是对称加密和非对称加密的结合，因为在加解密`pre_random`采用的是RSA算法所以成为RSA握手。
+- 浏览器 -> 服务器： `client_random` + 加密方法列表
+- 服务器 -> 浏览器： `server_random` + 加密方法 + 公钥
+- 浏览器生成随机数**pre_random**，并用公钥加密，传给服务器。
+- 服务器用私钥解密，得到**pre_random**
+- 然后浏览器和服务器用一样的公钥进行通信，即对称加密。
+中间人没有私钥，拿不到**pre_random**，无法生成最终的密钥。
 
+### TLS1.2握手过程
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffd9b35c7a81b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
+#### 1:step1: Client Hello
+首先，浏览器发送**client_random**、TLS版本以及加密套件列表。
 
+加密套件一般这样：
+```
+TLS_ECDHE_WITH_AES_128_GCM_SHA256
+```
+> 意思是TLS握手过程中，使用ECDHE算法生成pre_random(这个数后面会介绍)，128位的AES算法进行对称加密，在对称加密的过程中使用主流的GCM分组模式，因为对称加密中很重要的一个问题就是如何分组。最后一个是哈希摘要算法，采用SHA256算法。
+#### 2:step2: Server Hello
+**server_random**也是最后生成secret的一个参数, 同时确认 TLS 版本、需要使用的加密套件和自己的证书。
+#### 3:Clinet验证证书，生成secret
+客户端验证服务端传来的证书和签名是否通过，如果验证通过，则传递client_params这个参数给服务器。
+
+接着客户端通过ECDHE算法计算出pre_random，其中传入两个参数:server_params和client_params。现在你应该清楚这个两个参数的作用了吧，由于ECDHE基于椭圆曲线离散对数，这两个参数也称作椭圆曲线的公钥。
+
+客户端现在拥有了client_random、server_random和pre_random，接下来将这三个数通过一个伪随机数函数来计算出最终的secret。
+#### 4:Server生成secret
+现在服务端开始用ECDHE算法生成pre_random，接着用和客户端同样的伪随机数函数生成最后的secret。
+
+#### 注意事项
+1. 实际上 TLS 握手是一个双向认证的过程。step1：客户端有能力验证服务器的身份，step3:客户端发送`client_params`实际上给服务器传一个验证消息，让服务器将相同的验证流程(哈希摘要 + 私钥加密 + 公钥解密)走一遍，确认客户端的身份。
+2. 当客户端生成secret后，会给服务端发送一个收尾的消息，告诉服务器之后的都用对称加密，对称加密的算法就用第一次约定的。服务器生成完secret也会向客户端发送一个收尾的消息，告诉客户端以后就直接用对称加密来通信。
+
+这个收尾的消息包括两部分，一部分是Change Cipher Spec，意味着后面加密传输了，另一个是Finished消息，这个消息是对之前所有发送的数据做的摘要，对摘要进行加密，让对方验证一下。
+
+当双方都验证通过之后，握手才正式结束。后面的 HTTP 正式开始传输加密报文。
+
+#### RSA和ECDHE握手过程的区别
+1. ECDHE 握手，也就是主流的 TLS1.2 握手中，使用ECDHE实现pre_random的加密解密，没有用到 RSA。
+2. 使用 ECDHE 还有一个特点，就是客户端发送完收尾消息后可以提前抢跑，直接发送 HTTP 报文，节省了一个 RTT，不必等到收尾消息到达服务器，然后等服务器返回收尾消息给自己，直接开始发请求。这也叫TLS False Start。
 
 
 ## 十七、HTTP/2的改进
