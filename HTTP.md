@@ -39,7 +39,7 @@ URI： 统一资源标识符，区分互联网上不同的资源
 URI = URN + URL
 
 组成部分：
-1. scheme：协议名（http/https/file）://
+1. scheme：协议名（http/https/file）+ `://`
 2. user:passwd@： 登录主机时的用户信息，不安全，不常用
 3. host:port： 主机和端口号
 4. path： 路径
@@ -48,7 +48,7 @@ URI = URN + URL
 
 URI编码：
 
-ASCII（128个）之外的字符不支持，将所有非 ASCII 码字符和界定符转为**十六进制字节值**，然后在前面加个**%**
+ASCII（128个）之外的字符不支持，将所有非 ASCII 码字符和界定符转为**十六进制字节值**，然后在前面加个`%`
 
 ## 四、HTTP状态码
 - 1xx： 目前处于协议的中间状态，还需要后续操作
@@ -57,25 +57,25 @@ ASCII（128个）之外的字符不支持，将所有非 ASCII 码字符和界�
 - 4xx： 请求报文有错误
 - 5xx： 服务端发生错误
 
-
-- 101： HTTP升级为WebSocket时，如果服务器同意变更，会发送101
+常见相关状态码：
+- 101: `HTTP`升级为`WebSocket`时，如果服务器同意变更，会发送101
 - 200: 成功状态码，响应体中有数据
-- 204: No Conent，响应体中没有数据
-- 206: Partial Content，部分内容，HTTP分块下载和断点续传，响应头字段也会带上**Content-Range**
-- 301: 永久重定向
-- 302: 临时重定向
-- 304: Not Modified，协商缓存命中
-- 400: Bad Request，请求错误
-- 403: Forbidden，请求被拒绝
+- 204: `No Conent`，响应体中没有数据
+- 206: `Partial Content`，部分内容，HTTP分块下载和断点续传，响应头字段也会带上**Content-Range**
+- 301: 永久重定向。浏览器默认会做缓存优化，第二次访问的时候自动访问那个重定向的新地址。
+- 302: 临时重定向。浏览器不会做缓存优化。
+- 304: `Not Modified`，**协商缓存**命中
+- 400: `Bad Request`，请求错误
+- 403: `Forbidden`，请求被拒绝，服务器禁止访问
 - 404: 资源找不到
-- 405: Method Not Allowed，请求方法不被允许
-- 406: Not Acceptable，资源无法满足客户端条件
-- 408: Request Timeout，超时，服务器等了太长时间
-- 409: Conflict，多个请求发生了冲突
-- 413: Request Entity Too Large，请求体的体积过大
-- 414: Request-URL Too Large，请求行里的URL太大
-- 429: Too Many Request，客户端发送的请求过多
-- 431: Request Header Fields Too Large，请求头的字段内容过大
+- 405: `Method Not Allowed`，请求方法不被允许
+- 406: `Not Acceptable`，资源无法满足客户端条件
+- 408: `Request Timeout`，超时，服务器等了太长时间
+- 409: `Conflict`，多个请求发生了冲突
+- 413: `Request Entity Too Large`，请求体的体积过大
+- 414: `Request-URL Too Large`，请求行里的URL太大
+- 429: `Too Many Request`，客户端发送的请求过多
+- 431: `Request Header Fields Too Large`，请求头的字段内容过大
 - 500: 服务器出错
 - 501: 客户端的请求目前还不支持
 - 502: 服务器本身正常，但访问的时候出错
@@ -89,15 +89,15 @@ HTTP特点：
 4. 无状态。状态是指通信过程的上下文信息，每次http请求都是独立的、无关的。
 
 HTTP缺点：
-- 明文传输。报文（主要指头部）不实用二进制，而是文本，容易被截取
-- 对头阻塞问题。HTTP开启长连接时，共用一个TCP，同一时刻只能处理一个请求，当前请求耗时过长的情况下，其它请求只能处于阻塞状态，这就是**队头阻塞**问题。
+- 明文传输。报文（主要指头部）不是用二进制，而是文本，容易被截取
+- 队头阻塞问题。HTTP开启长连接时，**共用一个TCP**，同一时刻只能处理一个请求，当前请求耗时过长的情况下，其它请求只能处于阻塞状态，这就是**队头阻塞**问题。
 
 ## 六、Accept字段
 Accept分为四个部分：
-- 数据格式
-- 压缩方式
-- 支持语言
-- 字符集
+- **数据格式**
+- **压缩方式**
+- **支持语言**
+- **字符集**
 
 ### 数据格式
 字段为**Accept**和**Content-Type**
@@ -113,7 +113,7 @@ Accept分为四个部分：
 
 - gzip
 - deflate
-- br
+- br  //一种专门为 HTTP 发明的压缩算法
 
 ### 支持语言
 **Accept-Language**和**Content-Language**
@@ -154,7 +154,11 @@ Accept-Ranges: none   //不支持范围请求
 ```
 
 ### 客户端
-客户端通过**Range**字段确定请求范围，格式为**bytes=x-y**。
+对于客户端，需要指定请求哪一部分，通过**Range**字段确定请求范围，格式为**bytes=x-y**。
+
+服务器收到请求之后。首先验证范围是否合法，如果越界则返回**416**，否则读取相应片段并返回**206**。
+
+同时，服务器响应需要添加**Content-Range**字段。
 
 具体分为单段请求和多段请求：
 ```
@@ -198,9 +202,11 @@ Content-Range: bytes 20-29/96
 eex jspy e
 --00000010101--
 ```
-**Content-Type**: multipart/byteranges;boundary=00000010101 表示：
+`Content-Type: multipart/byteranges;boundary=00000010101` 表示：
 1. 请求一定是多段请求
 2. 响应体中的分隔符是 00000010101
+
+在响应体中各段数据之间会由这里指定的**分隔符**分开，而且在最后的分隔末尾添上--表示结束。
 
 
 ## 九、HTTP处理表单数据的提交
