@@ -223,7 +223,7 @@ eex jspy e
 ```
 
 ### multipart/form-data
-- 请求头中的Content-Type字段会包含boundary，且boundary的值有浏览器默认指定。例: Content-Type: multipart/form-data;boundary=----WebkitFormBoundaryRRJKeWfHPGrS4LKe。
+- 请求头中的**Content-Type**字段会包含**boundary**，且boundary的值有浏览器默认指定。例: `Content-Type: multipart/form-data;boundary=----WebkitFormBoundaryRRJKeWfHPGrS4LKe`
 - 数据会分为多个部分，每两个部分之间通过分隔符来分隔，每部分表述均有 HTTP 头部描述子包体，如Content-Type，在最后的分隔符会加上--表示结束。
 
 请求体：
@@ -238,15 +238,26 @@ data2
 ----WebkitFormBoundaryRRJKeWfHPGrS4LKe--
 ```
 
+### 小结
+`multipart/form-data`格式最大的特点在于:**每一个表单元素都是独立的资源表述**。
+
+另外，你可能在写业务的过程中，并没有注意到其中还有boundary的存在，如果你打开抓包工具，确实可以看到不同的表单元素被拆分开了，之所以在平时感觉不到，是以为浏览器和 HTTP 给你封装了这一系列操作。
+
+而且，在实际的场景中，对于图片等文件的上传，基本采用`multipart/form-data`而不用`application/x-www-form-urlencoded`，因为没有必要做 URL 编码，带来巨大耗时的同时也占用了更多的空间。
+
 
 ## 十、HTTP队头阻塞问题
-HTTP报文是一发一收，任务被放置在任务队列中执行，一旦队首的请求处理太慢，就会阻塞到后面请求的处理，这就是**HTTP队友阻塞**。
+HTTP报文是一发一收，任务被放置在任务队列中执行，一旦队首的请求处理太慢，就会阻塞到后面请求的处理，这就是**HTTP队头阻塞**。
 
 ### 并发连接
-一个域名允许分配多个长连接，那么相当于增加了任务队列，不至于一个队伍的任务阻塞其它所有任务。在RFC2616规定过客户端最多并发 2 个连接，不过事实上在现在的浏览器标准中，这个上限要多很多，Chrome 中是 6 个。
+一个域名允许分配多个长连接，那么相当于增加了任务队列，不至于一个队列的任务阻塞其它所有任务。在RFC2616规定过客户端最多并发 2 个连接，不过事实上在现在的浏览器标准中，这个上限要多很多，Chrome 中是 6 个。
 
 ### 域名分卡
 一个域名不是可以并发 6 个长连接吗？那我就多分几个域名。
+
+比如`content1.xxx.com`、`content2.xxx.com`
+
+这样`xxx.com`下面可以分出非常多的二级域名，而它们指向统一服务器，能够并发的长连接增多了。
 
 ## 十一、Cookie
 HTTP是无状态协议，引入Cookie保存一些状态。
@@ -259,15 +270,15 @@ set-Cookie: b=xxx
 ```
 
 ### Cookie生命周期
-- Expires   过期时间
-- Max-Age   生效时长，从浏览器收到报文开始计算
+- Expires   //过期时间
+- Max-Age   //生效时长，从浏览器收到报文开始计算
 
 ### 作用域
 **Domain**和**Path**，绑定域名和路径。
 
 ### 安全相关
-- HttpOnly  只能通过HTTP协议传输，不能通过JS访问
-- SameSite  Strict、Lax、None
+- HttpOnly  //设置只能通过HTTP协议传输获取，不能通过JS访问
+- SameSite  //Strict、Lax、None
 
 ### Cookie缺点
 1. 容量太小
@@ -278,9 +289,9 @@ set-Cookie: b=xxx
 在客户端和服务器之间充当中间人的身份。对于客户端是接收方，对于源服务器是发送方。
 
 功能：
-1. 负载均衡。保障各台源服务器负载平均。
-2. 保障安全。利用心跳机制监控后台的服务器，一旦发现故障机就将其踢出集群。并且对于上下行的数据进行过滤，对非法 IP 限流，这些都是代理服务器的工作。
-3. 缓存代理。
+1. **负载均衡**。保障各台源服务器负载平均。
+2. **保障安全**。利用心跳机制监控后台的服务器，一旦发现故障机就将其踢出集群。并且对于上下行的数据进行过滤，对非法 IP 限流，这些都是代理服务器的工作。
+3. **缓存代理**。
 
 ### 相关头部字段
 - Via： 记录经过的代理服务器，顺序即为在 HTTP 传输中报文传达的顺序。
@@ -299,8 +310,8 @@ set-Cookie: b=xxx
 代理缓存的控制分为两部分：一是**源服务器端**的控制，二是**客户端**的控制。
 
 ### 源服务器端的缓存控制
-- private和public   // 响应头中**Cache-Control**加入，private或public表示是否允许代理服务器缓存。
-- proxy-revalidate  //must-revalidate的意思是客户端缓存过期就去源服务器获取，而proxy-revalidate则表示代理服务器的缓存过期后到源服务器获取。
+- **public、private**   // 响应头中**Cache-Control**加入，private或public表示是否允许代理服务器缓存。
+- proxy-revalidate  //`must-revalidate`的意思是客户端缓存过期就去源服务器获取，而p`roxy-revalidate`则表示代理服务器的缓存过期后到源服务器获取。
 - s-maxage  //限制了缓存在代理服务器中可以存放多久
 
 ### 客户端的缓存控制
@@ -309,12 +320,26 @@ set-Cookie: b=xxx
 - only-if-cached  //表示客户端只接受代理缓存，不接受源服务器的缓存。如果代理缓存无效，直接返回**504（Gateway Timeout）**
 
 ## 十四、跨域
-同源协议：协议、主机、端口相同为同源。
+同源协议：**协议、主机、端口**都相同为同源。
 
-非同源有一定限制：
+### 什么是跨域
+非同源即跨域有一定限制：
 - 不能读取和修改DOM
-- 不能访问Cookie、LocalStorage、SessionStorage、IndexDB
+- 不能访问Cookie、LocalStorage、SessionStorage、IndexDB...
 - 限制XMLHttpRequest
+
+跨域请求的响应一般会被**浏览器**所拦截，注意，是被浏览器拦截，响应其实是成功到达客户端了。
+
+首先，浏览器是多进程的：
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffd8131a4628f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffd83a20647db?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+**WebKit 渲染引擎**和**V8 引擎**都在渲染进程当中。
+
+当`xhr.send`被调用，即` Ajax `请求准备发送的时候，其实还只是在**渲染进程**的处理。为了防止黑客通过脚本触碰到系统资源，浏览器将每一个渲染进程装进了沙箱，并给每一个不同的站点（一级域名不同）分配了沙箱，互不干扰。
+
+在沙箱当中的渲染进程是没有办法发送网络请求的，只能通过网络进程来发送。就涉及到进程间通信（IPC）。
+
+现在数据传递给了浏览器主进程，主进程接收到后，才真正地发出相应的网络请求。在服务端处理完数据后，将响应返回，主进程检查到跨域，且没有**cors**(后面会详细说)响应头，将响应体全部丢掉，并不会发送给渲染进程。这就达到了拦截数据的目的。
 
 ### CORS
 跨站资源共享，需要浏览器和服务器的共同支持。
@@ -328,15 +353,13 @@ set-Cookie: b=xxx
 
 属于简单请求，自动在请求头中加入**Origin**，说明来自哪个源。
 
-服务器拿到请求之后，在回应时对应地添加**Access-Control-Allow-Origin**字段，如果Origin不在这个字段的范围中，那么浏览器就会将响应拦截。
+服务器拿到请求之后，在回应时对应地添加**Access-Control-Allow-Origin**字段，如果`Origin`不在这个字段的范围中，那么浏览器就会将响应拦截。
 
 **Access-Control-Allow-Credentials**：这个字段是一个布尔值，表示是否允许发送 Cookie，对于跨域请求，浏览器对这个字段默认值设为 false，而如果需要拿到浏览器的 Cookie，需要添加这个响应头并设为true, 并且在前端也需要设置withCredentials属性:
 ```
 let xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 ```
-
-**Access-Control-Expose-Headers**：
 
 ### 非简单请求
 非简单请求有两个不同：**预检请求**和**响应字段**
@@ -357,7 +380,7 @@ Host: xxx.com
 Access-Control-Request-Method: PUT
 Access-Control-Request-Headers: X-Custom-Header
 ```
-预检请求的方法是**OPTIONS**，同时会加上Origin源地址和Host目标地址，这很简单。同时也会加上两个关键的字段:
+预检请求的方法是**OPTIONS**，同时会加上`Origin`源地址和`Host`目标地址，这很简单。同时也会加上两个关键的字段:
 - Access-Control-Request-Method, 列出 CORS 请求用到哪个HTTP方法
 - Access-Control-Request-Headers，指定 CORS 请求将要加上什么请求头
 
@@ -383,9 +406,9 @@ Content-Length: 0
 - Access-Control-Allow-Headers: 表示允许发送的请求头字段
 - Access-Control-Max-Age: 预检请求的有效期，在此期间，不用发出另外一条预检请求。
 
-在预检请求的响应返回后，如果请求不满足响应头的条件，则触发XMLHttpRequest的onerror方法，当然后面真正的CORS请求也不会发出去了。
+在预检请求的响应返回后，如果请求不满足响应头的条件，则触发XMLHttpRequest的`onerror`方法，当然后面真正的CORS请求也不会发出去了。
 
-CORS 请求的响应。绕了这么一大转，到了真正的 CORS 请求就容易多了，现在它和简单请求的情况是一样的。浏览器自动加上Origin字段，服务端响应头返回Access-Control-Allow-Origin。可以参考以上简单请求部分的内容。
+CORS 请求的响应。绕了这么一大转，到了真正的 CORS 请求就容易多了，现在它和简单请求的情况是一样的。浏览器自动加上`Origin`字段，服务端响应头返回`Access-Control-Allow-Origin`。可以参考以上简单请求部分的内容。
 
 ### JSONP
 利用script的src不遵循同源协议，兼容性较好，但仅限于**GET**请求。
@@ -393,6 +416,7 @@ CORS 请求的响应。绕了这么一大转，到了真正的 CORS 请求就容
 ### Nginx
 Nginx 是一种高性能的反向代理服务器，可以用来轻松解决跨域问题。
 
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffd97d0b1cf15?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 正向代理帮助客户端访问客户端自己访问不到的服务器，然后将结果返回给客户端。
 
 反向代理拿到客户端的请求，将请求转发给其他的服务器，主要的场景是维持服务器集群的负载均衡，换句话说，反向代理帮其它的服务器拿到请求，然后选择一个合适的服务器，将请求转交给它。
@@ -419,6 +443,7 @@ SSL 即安全套接层（Secure Sockets Layer），在 OSI 七层模型中处于
 HTTPS已经将安全做的足够好，HTTP/2改进的是性能，主要有两方面：
 - 头部压缩
 - 多路复用
+
 还有一些新增功能：
 - 设置请求优先级
 - 服务器推送
@@ -430,6 +455,8 @@ HTTP/2针对头部字段，采用了**HPACK算法**压缩。
 
 HPACK主要有两个亮点：
 1. 浏览器和服务器之间建立一个哈希表，将用过的相关字段存入，传输过程直接使用**索引**。
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffdaa6f41c004?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+> HTTP/2 当中废除了起始行的概念，将起始行中的请求方法、URI、状态码转换成了头字段，不过这些字段都有一个":"前缀，用来和其它请求头区分开。
 2. 对于整数和字符进行**哈夫曼编码**。先将所有出现的字符建立一张索引表，然后让出现次数较多的索引尽可能短。
 
 ### 多路复用
@@ -441,14 +468,21 @@ HTTP的明文传输效率比较低，HTTP/2将报文全部替换为**二进制�
 
 通信双方都可以给对方发送二进制帧，这种二进制帧的双向传输的序列，也叫做**流(Stream)**。HTTP/2 用流来在一个 TCP 连接上来进行多个数据帧的通信，这就是**多路复用**的概念。
 
-所谓乱序，是指不同ID的Stream是乱序的，但同一个 Stream ID 的帧一定是按顺序传输的。二进制帧到达后对方会将 Stream ID 相同的二进制帧组装成完整的请求报文和响应报文。
+所谓乱序，是指不同ID的Stream是乱序的，但同一个 Stream ID 的帧一定是按顺序传输的。二进制帧到达后对方会将 **Stream ID** 相同的二进制帧组装成完整的请求报文和响应报文。
 
 ### 服务器推送
 HTTP/2也能新建stream来给客户端发送消息。
 
 当 TCP 连接建立之后，比如浏览器请求一个 HTML 文件，服务器就可以在返回 HTML 的基础上，将 HTML 中引用到的其他资源文件一起返回给客户端，减少客户端的等待。
 
+### 小结
+HTTP/2完全兼容之前的HTTP的语法和语义，如请求头、状态码、头部字段都没有改变。
+
+此外，在安全方面，HTTP/2也支持TLS，并且现在主流的浏览器都公开只支持加密的 HTTP/2, 因此你现在能看到的 HTTP/2 也基本上都是跑在 TLS 上面的了。
+![](https://user-gold-cdn.xitu.io/2020/3/22/170ffdc6783132a5?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
 ## 十八、HTTP/2中的二进制帧
+### 帧结构
 ![](https://user-gold-cdn.xitu.io/2020/3/22/170ffdc9e9c25e93?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 帧分为帧头和帧体。
 
