@@ -441,11 +441,13 @@ SSL 即安全套接层（Secure Sockets Layer），在 OSI 七层模型中处于
 
 ### 传统RSA握手
 传统的TLS握手就是RSA握手，是对称加密和非对称加密的结合，因为在加解密`pre_random`采用的是RSA算法所以成为RSA握手。
+![](http://47.98.159.95/my_blog/week12/1.jpg)
 - 浏览器 -> 服务器： `client_random` + 加密方法列表
 - 服务器 -> 浏览器： `server_random` + 加密方法 + 公钥
 - 浏览器生成随机数**pre_random**，并用公钥加密，传给服务器。
 - 服务器用私钥解密，得到**pre_random**
 - 然后浏览器和服务器用一样的公钥进行通信，即对称加密。
+
 中间人没有私钥，拿不到**pre_random**，无法生成最终的密钥。
 
 ### TLS1.2握手过程
