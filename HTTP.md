@@ -20,7 +20,7 @@ HTTP报文结构：
 ## 二、HTTP请求方法
 - GET   获取资源
 - POST  更新资源
-- HEAD  获取资源的元信息
+- HEAD  获取资源的元信息，用于获取报头
 - PUT   修改数据
 - OPTIONS 列出可对资源实行的请求方法
 - DELETE  删除资源
