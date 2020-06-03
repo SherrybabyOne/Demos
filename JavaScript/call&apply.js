@@ -1,5 +1,8 @@
 // 模拟call、apply函数
 Function.prototype.call = function(context = window, ...args) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error');
+  }
   const fn = Symbol('fn');
   context[fn] = this;
 
@@ -9,6 +12,9 @@ Function.prototype.call = function(context = window, ...args) {
 }
 
 Function.prototype.apply = function(context, args) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error');
+  }
   const fn = Symbol('fn');
   context[fn] = this;
 
