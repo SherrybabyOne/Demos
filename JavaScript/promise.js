@@ -9,45 +9,56 @@ const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
 function MyPromise(exector) {
-  this.status = PENDING;
-  this.value = null;
-  this.error = null;
+  const that = this;
+  that.status = PENDING;
+  that.value = null;
+  that.error = null;
   // 成功态回调队列
-  this.onFulfilledCallbacks = [];
+  that.onFulfilledCallbacks = [];
   // 失败态回调队列
-  this.onRejectedCallbacks = [];
+  that.onRejectedCallbacks = [];
 
   const resolve = value => {
-    if (this.status !== PENDING) return;
+    if (value instanceof MyPromise) {
+      return value.then(resolve, reject);
+    }
     setTimeout(() => {
-      this.value = value;
-      this.staus = FULFILLED;
-      this.onFulfilledCallbacks.map(cb => {
-        this.value = cb(this.value);
-      })
-    })
+      if (that.status === PENDING) {
+        that.value = value;
+        that.staus = FULFILLED;
+        that.onFulfilledCallbacks.map(cb => {
+          that.value = cb(that.value);
+        })
+      }
+    }, 0)
   }
   const reject = error => {
-    if (this.status !== PENDING) return;
     setTimeout(() => {
-      this.error = error;
-      this.status = REJECTED;
-      this.onRejectedCallbacks.map(cb => {
-        this.error = cb(this.error);
-      })
-    })
+      if (that.status === PENDING) {
+        that.error = error;
+        that.status = REJECTED;
+        that.onRejectedCallbacks.map(cb => {
+          that.error = cb(that.error);
+        })
+      }
+    }, 0)
   }
   exector(resolve, reject);
 }
 MyPromise.prototype.then = function(onFulfilled, onRejected) {
-  if (this.status === PENDING) {
-    typeof onFulfilled === 'function' && this.onFulfilledCallbacks.push(onFulfilled);
-    typeof onRejected === 'function' && this.onRejectedCallbacks.push(onRejected);
-  } else if (this.status === FULFILLED) {
-    onFulfilled(this.value);
+  const that = this;
+  onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v;
+  onRejected = typeof onRejected === 'function' ? onRejected : r => { throw r };
+  if (that.status === PENDING) {
+    that.onFulfilledCallbacks.push(onFulfilled);
+    that.onRejectedCallbacks.push(onRejected);
+  } else if (that.status === FULFILLED) {
+    onFulfilled(that.value);
   } else {
-    onRejected(this.error);
+    onRejected(that.error);
   }
   // 返回this支持then方法可以被同一个promise调用多次
-  return this;
+  return that;
 }
+
+MyPromise.resolve(4).then().then((value) => console.log(value))
