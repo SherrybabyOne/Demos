@@ -1,6 +1,6 @@
 const Ajax = {
   get: function(url, fn) {
-    const xhr = new XMLHttpRequest();
+    const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Mscrosoft.XMLHttp');
     xhr.open('GET', url, false);
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
@@ -13,7 +13,7 @@ const Ajax = {
     xhr.send();
   },
   post: function(url, data, fn) {
-    const xhr = new XMLHttpRequest();
+    const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Mscrosoft.XMLHttp');
     xhr.open('POST', url, false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Accept', 'application/json');
