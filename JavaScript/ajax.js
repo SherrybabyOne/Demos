@@ -31,7 +31,7 @@ const Ajax = {
 
 const getJSON = function(url) {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
+    const xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Mscrosoft.XMLHttp');
     xhr.open('GET', url, false);
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.onreadystatechange = function() {
