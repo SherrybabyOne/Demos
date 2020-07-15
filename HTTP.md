@@ -67,12 +67,11 @@ ASCII（128个）之外的字符不支持，将所有非 ASCII 码字符和界�
 - 302: 临时重定向。浏览器不会做缓存优化。
 - 304: `Not Modified`，**协商缓存**命中
 - 400: `Bad Request`，请求错误
+- 401: `unauthorized`，未鉴权，发送的请求需要有通过HTTP认证的认证信息
 - 403: `Forbidden`，请求被拒绝，服务器禁止访问
 - 404: 资源找不到
 - 405: `Method Not Allowed`，请求方法不被允许
 - 406: `Not Acceptable`，资源无法满足客户端条件
-- 408: `Request Timeout`，超时，服务器等了太长时间
-- 409: `Conflict`，多个请求发生了冲突
 - 413: `Request Entity Too Large`，请求体的体积过大
 - 414: `Request-URL Too Large`，请求行里的URL太大
 - 429: `Too Many Request`，客户端发送的请求过多
