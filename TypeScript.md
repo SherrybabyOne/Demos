@@ -77,8 +77,8 @@ interface SearchFunc {
 
 let mySearch: SearchFunc;
 mySearch = function(src, sub) {
-    let result = src.search(sub);
-    return result > -1;
+  let result = src.search(sub);
+  return result > -1;
 }
 ```
 
@@ -86,12 +86,12 @@ mySearch = function(src, sub) {
 使用**implements**。
 ```
 interface ClockInterface {
-    currentTime: Date;
+  currentTime: Date;
 }
 
 class Clock implements ClockInterface {
-    currentTime: Date;
-    constructor(h: number, m: number) { }
+  currentTime: Date;
+  constructor(h: number, m: number) { }
 }
 ```
 接口描述的是类的**公共部分**，不会检查类是否具有某些私有成员。
@@ -120,13 +120,13 @@ square.sideLength = 10;
 ## 三、类
 ```
 class Greeter {
-    greeting: string;
-    constructor(message: string) {
-        this.greeting = message;
-    }
-    greet() {
-        return "Hello, " + this.greeting;
-    }
+  greeting: string;
+  constructor(message: string) {
+    this.greeting = message;
+  }
+  greet() {
+    return "Hello, " + this.greeting;
+  }
 }
 
 let greeter = new Greeter("world");
@@ -138,8 +138,8 @@ let greeter = new Greeter("world");
 当成员被标记为private时，不能在类的外部访问。
 ```
 class Animal {
-    private name: string;
-    constructor(theName: string) { this.name = theName; }
+  private name: string;
+  constructor(theName: string) { this.name = theName; }
 }
 
 new Animal("Cat").name; // 错误: 'name' 是私有的.
@@ -155,10 +155,10 @@ new Animal("Cat").name; // 错误: 'name' 是私有的.
 参数属性：可以添加访问限制符：public、private、protected进行声明限制。
 ```
 class Animal {
-    constructor(private name: string) { }
-    move(distanceInMeters: number) {
-        console.log(`${this.name} moved ${distanceInMeters}m.`);
-    }
+  constructor(private name: string) { }
+  move(distanceInMeters: number) {
+    console.log(`${this.name} moved ${distanceInMeters}m.`);
+  }
 }
 ```
 
@@ -211,9 +211,117 @@ TS里每个参数都是必须的。
 - 可以给函数参数一个默认值
 - 剩余参数rest。`function fn(x: number, ...y: number[]) {}`
 
-### this参数
-在需要
+### 函数重载
+为同一个函数提供多个函数类型定义来进行函数重载。
 
+## 五、范型（generic）
+范型用来创建可重用的组件，一个组件可以支持多种类型的数据。
+```
+function identity<T>(arg: T): T {
+  return arg;
+}
+```
+
+### 范型类型
+可以写一个范型接口:
+```
+interface GenericIdentityFn {
+  <T>(arg: T): T;
+}
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+const myIdentity: GenericIdentityFn = identity;
+```
+
+可以把范型参数当作整个接口的一个参数
+```
+interface GenericIdentityFn<T> {
+  (arg: T): T;
+}
+function identity(arg: string): string {
+  return arg;
+}
+
+const myIdentity: GenericIdentityFn<string> = identity;
+```
+
+### 范型类
+```
+class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function(x, y) { return x + y; };
+```
+范型类指的是实例部分的类型，所以类的静态属性不能使用这个范型类型。
+
+### 范型约束
+限制函数去处理带有`.length`属性的类型，至少包含这一属性。
+```
+interface Lengthwise {
+  length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+  console.log(arg.length);  // Now we know it has a .length property, so no more error
+  return arg;
+}
+```
+
+在范型约束中使用类型参数：
+```
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+
+let x = { a: 1, b: 2, c: 3, d: 4 };
+
+getProperty(x, "a"); // okay
+getProperty(x, "m"); // error
+```
+
+## 六、枚举（enum）
+使用枚举可以定义一些有名字的数字变量，默认从0开始递增加1。
+
+枚举类型被编译成一个对象，它包含双向映射(name -> value)和(value -> name)。
+
+常数枚举是在`enum`关键字前使用`const`修饰符。
+
+常数枚举只能使用常数枚举表达式并且不同于常规的枚举的是它们在编译阶段会被删除。
+
+## 七、类型推论（type inference）
+
+### 通用类型推论
+```
+const x = [0, 1, null];
+```
+TS会推断出一个通用类型（一个兼容所有候选类型），如果没有最佳通用类型的话就为联合类型。
+
+### 上下文类型
+上下文归类会发生在表达式的类型与所处的位置相关时。
+```
+window.onmousedown = function(mouseEvent) {
+  console.log(mouseEvent.button);  //<- Error
+};
+```
+TypeScript类型检查器使用Window.onmousedown函数的类型来推断右边函数表达式的类型。 因此，就能推断出mouseEvent参数的类型了。 如果函数表达式不是在上下文类型的位置，mouseEvent参数的类型需要指定为any，这样也不会报错了。
+```
+window.onmousedown = function(mouseEvent: any) {
+  console.log(mouseEvent.button);  //<- Now, no error is given
+};
+```
+上下文归类会在很多情况下使用到。 通常包含函数的参数，赋值表达式的右边，类型断言，对象成员和数组字面量和返回值语句。 上下文类型也会做为最佳通用类型的候选类型。比如：
+```
+function createZoo(): Animal[] {
+  return [new Rhino(), new Elephant(), new Snake()];
+}
+```
+`Animal`会成为最佳通用类型。
 
 
 
