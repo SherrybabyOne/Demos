@@ -18,7 +18,6 @@ Array.prototype.reduce = function(callbackfn, initialValue) {
       }
     }
   }
-  console.log(accumulator, k, this)
   // 数组为空
   if (k === len && accumulator === undefined) {
     throw new Error('Each element of the array is empty');
