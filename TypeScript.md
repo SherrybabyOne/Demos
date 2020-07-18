@@ -1,4 +1,5 @@
 # TypeScript
+TypeScript是JavaScript的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。
 
 ## 一、基础类型
 - 布尔值
@@ -322,6 +323,8 @@ function createZoo(): Animal[] {
 }
 ```
 `Animal`会成为最佳通用类型。
+
+### 类型兼容性
 
 
 
