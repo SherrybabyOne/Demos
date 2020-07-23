@@ -1,19 +1,44 @@
-const imageUrls = [
-  'pic_1.png',
-  'pic_2.png',
-  'pic_3.png',
-  'pic_4.png',
-  'pic_5.png',
-  'pic_6.png',
-]
-// 为了演示方便，我们在此用fetchImage函数来模拟异步请求图片，返回成功提示
-function fetchImage(url) {
-  // 模拟请求的响应时间在0 - 1s之间随机
-  const timeCost = Math.random() * 1000
-  return new Promise(resolve =>
-    setTimeout(resolve, timeCost, 'get: ' + url)
-  ).then(res => console.log(res));
+class Scheduler {
+  constructor() {
+    this.queue = [];
+    this.maxCount = 2;
+    this.runCounts = 0;
+  }
+  add(promiseCreator) {
+    this.queue.push(promiseCreator);
+  }
+  taskStart() {
+    for (let i = 0; i < this.maxCount; i++) {
+      this.request();
+    }
+  }
+  request() {
+    if (!this.queue || !this.queue.length || this.runCounts >= this.maxCount) {
+      return;
+    }
+    this.runCounts++;
+
+    this.queue.shift()().then(() => {
+      this.runCounts--;
+      this.request();
+    });
+  }
 }
-
-const a = imageUrls.map(item => fetchImage(item));
-
+   
+const timeout = time => new Promise(resolve => {
+  setTimeout(resolve, time);
+})
+  
+const scheduler = new Scheduler();
+  
+const addTask = (time,order) => {
+  scheduler.add(() => timeout(time).then(()=>console.log(order)))
+}
+  
+  
+addTask(1000, '1');
+addTask(500, '2');
+addTask(300, '3');
+addTask(400, '4');
+  
+scheduler.taskStart()
