@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .content {
+      height: 200px;
+    }
+    .one {
+      background-color: red;
+    }
+    .two {
+      background-color: blue;
+    }
+    .there {
+      background-color: black;
+    }
+    .four {
+      background-color: cadetblue;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="content one"></div>
+    <div class="content two"></div>
+    <div class="content there"></div>
+    <div class="content four"></div>
+  </div>
+</body>
+<script>
+  window.addEventListener('scroll', function() {
+    const clientHeight = document.documentElement.clientHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    if (clientHeight + scrollTop >= scrollHeight) {
+      const eleOne = document.createElement('div');
+      eleOne.setAttribute('class', 'content one');
+      const eleTwo = document.createElement('div');
+      eleTwo.setAttribute('class', 'content two');
+      const eleThere = document.createElement('div');
+      eleThere.setAttribute('class', 'content there');
+      const eleFour = document.createElement('div');
+      eleFour.setAttribute('class', 'content four');
+
+      const fragment = document.createDocumentFragment();
+      fragment.append(eleOne, eleTwo, eleThere, eleFour);
+      document.querySelector('.main').appendChild(fragment);
+    }
+  }, false);
+</script>
+</html>
