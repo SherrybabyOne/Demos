@@ -24,7 +24,7 @@ Array.prototype.reduce = function(callbackfn, initialValue) {
   }
   for(; k < len; k++) {
     if (k in this) {
-      accumulator = callbackfn.call(undefined, accumulator, this[k], k), this;
+      accumulator = callbackfn.call(undefined, accumulator, this[k], k, this);
     }
   }
   return accumulator;
