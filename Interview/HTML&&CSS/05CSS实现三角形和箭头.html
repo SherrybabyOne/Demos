@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .sjx {
+      height: 400px;
+    }
+    .main1 {
+      border: 100px solid transparent;
+      border-left-color: red;
+      width: 0;
+      height: 0;
+    }
+
+    .jt {
+      height: 400px;
+    }
+    .left{
+      position: absolute;
+    }
+    .left::before, .left::after{
+      position: absolute;
+      content: '';
+      border-top: 10px transparent dashed;
+      border-left: 10px transparent dashed;
+      border-bottom: 10px transparent dashed;
+      border-right: 10px #fff solid;
+    }
+    .left::before{
+      border-right: 10px #0099CC solid;
+    }
+    .left::after{
+      left: 1px; /*覆盖并错开1px*/
+      border-right: 10px #fff solid;
+    }
+  </style>
+</head>
+<body>
+  <div class="sjx">
+    <div class="main1"></div>
+  </div>
+  <div class="jt">
+    <div class="left"></div>
+  </div>
+</body>
+</html>
