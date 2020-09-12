@@ -3,7 +3,7 @@
 - 在读: 21届 东北大学 专业:计算机科学与技术
 - github: `https://github.com/SherrybabyOne`
 - 期望职位: 前端开发
-- 期望城市:成都、杭州、北京、上海
+- 期望城市: 北京、成都、杭州、上海、广州
 
 # 联系方式
 - 手机:13785922100
@@ -55,7 +55,7 @@ EA国际化紧急需求在现有多语言引入解决方面上扩充了相关翻
 - Major: Computer Science and technology
 - github: https://github.com/SherrybabyOne
 - Expected position: front end development
-- Expected cities: Chengdu, Hangzhou, Beijing, Shanghai
+- Expected cities: Beijing, Chengdu, Hangzhou, Shanghai,Guangzhou
 
 # Contact information
 - Mobile phone: 13785922100
