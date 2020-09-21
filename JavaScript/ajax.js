@@ -31,9 +31,12 @@ const Ajax = {
 
 const getJSON = function(url) {
   return new Promise((resolve, reject) => {
+    // 兼容IE低版本
     const xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Mscrosoft.XMLHttp');
+    // 第三个参数为false，表示异步操作
     xhr.open('GET', url, false);
     xhr.setRequestHeader('Accept', 'application/json');
+    // 监听readyState
     xhr.onreadystatechange = function() {
       if (xhr.readyState !== 4) return;
       if (xhr.status === 200 || xhr.status === 304) {

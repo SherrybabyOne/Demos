@@ -11,7 +11,7 @@ Function.prototype.call = function(context = window, ...args) {
   return res;
 }
 
-Function.prototype.apply = function(context, args) {
+Function.prototype.apply = function(context = window, args) {
   if (typeof this !== 'function') {
     throw new TypeError('Error');
   }

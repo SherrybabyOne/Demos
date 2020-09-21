@@ -13,7 +13,7 @@ const flatten = arr => {
   }, [])
 }
 
-let res5 = [];
+const res5 = [];
 const fn = arr => {
   for (let i = 0; i < arr.length; i++) {
     if (Array.isArray(arr[i])) {
