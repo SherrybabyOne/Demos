@@ -1,27 +1,22 @@
-// 实现数组filter函数
-Array.prototype.filter = function(callbackfn, thisArg) {
-  if (this == undefined) throw new TypeError("Type Error");
-  if (typeof callbackfn !== 'function') throw new TypeError("Type Error");
+Array.prototype.filter = function(callback, thisArg) {
+  if (this == undefined) {
+    throw new TypeError('this is null or not undefined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + 'is not a function');
+  }
   const res = [];
-  for (let i = 0, j = 0; i < len; i++) {
-    if (callbackfn.call(thisArg, this[i], i, this)) {
-      res[j] = this[i];
-      j++
+  // 让O成为回调函数的对象传递（强制转换对象）
+  const O = Object(this);
+  // >>>0 保证len为number，且为正整数
+  const len = O.length >>> 0;
+  for (let i = 0; i < len; i++) {
+    if (i in O) {
+      // 回调函数调用传参
+      if (callback.call(thisArg, O[i], i, O)) {
+        res.push(O[i]);
+      }
     }
   }
   return res;
 }
-
-const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-
-const result = words.filter(word => word.length > 6);
-
-console.log(result);
-// expected output: Array ["exuberant", "destruction", "present"]
-
-function isBigEnough(element) {
-  return element >= 10;
-}
-var filtered = [12, 5, 8, 130, 44].filter(isBigEnough);
-// filtered is [12, 130, 44]
-console.log(filtered);
