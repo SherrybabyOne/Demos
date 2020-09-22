@@ -2,3 +2,7 @@ node_modules/
 
 Resume-en.md
 Resume.md
+
+# misc 
+.DS_Store
+npm-debug.log*
