@@ -11,7 +11,6 @@ function add() {
   }
   return fn;
 }
-console.log(add(1)(2, 3)(4).toString());
 
 // 珂里化的应用：
 const checkType = (type, content) => {

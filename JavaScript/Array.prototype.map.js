@@ -1,23 +1,19 @@
-// 模拟数组map方法
-Array.prototype.map = function(callbackFn, thisArg) {
-  if (this == undefined) throw new TypeError('Type Error');
-  if (typeof callbackFn !== 'function') throw new TypeError('Type Error');
+Array.prototype.map = function(callback, thisArg) {
+  if (this == undefined) {
+    throw new TypeError('this is null or not defined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
   const res = [];
+  // 同理
+  const O = Object(this);
+  const len = O.length >>> 0;
   for (let i = 0; i < len; i++) {
-    if (i in this) {
-      const val = this[i];
-      res[i] = callbackFn.call(thisArg, val, i, this);
+    if (i in O) {
+      // 调用回调函数并传入新数组
+      res[i] = callback.call(thisArg, O[i], i, this);
     }
   }
   return res;
 }
-
-const array1 = [1, 4, 9, 16];
-const map1 = array1.map(x => x * 2);
-console.log(map1);
-
-var map = Array.prototype.map
-var a = map.call("Hello World", function(x) { 
-  return x.charCodeAt(0); 
-})
-console.log(a);
