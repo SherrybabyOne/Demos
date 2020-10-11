@@ -50,8 +50,8 @@ class Promise {
   }
   then(onFulfilled, onRejected) {
     onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
-    onRejected = typeof onRejected === 'function'? onRejected:
-      reason => { throw new Error(reason instanceof Error ? reason.message:reason) }
+    onRejected = typeof onRejected === 'function'? onRejected :
+      reason => { throw new Error(reason instanceof Error ? reason.message : reason) }
     // 保存this
     const self = this;
     return new Promise((resolve, reject) => {
@@ -92,11 +92,11 @@ class Promise {
         } catch(e) {
           reject(e);
         }
-      } else if (self.status === REJECTED){
+      } else if (self.status === REJECTED) {
         try {
           setTimeout(() => {
             const result = onRejected(self.reason);
-            result instanceof Promise ? result.then(resolve, reject) : reject(result);
+            result instanceof Promise ? result.then(resolve, reject) : resolve(result);
           })
         } catch(e) {
           reject(e);
