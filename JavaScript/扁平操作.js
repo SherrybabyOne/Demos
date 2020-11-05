@@ -12,6 +12,7 @@ const flatten = arr => {
     return pre.concat(Array.isArray(cur) ? flatten(cur) : cur);
   }, [])
 }
+const res4 = flatten(arr);
 
 const res5 = [];
 const fn = arr => {
@@ -37,7 +38,7 @@ console.log(
   res1,
   res2,
   res3,
-  flatten(arr),
+  res4,
   res5,
   res6,
 );
