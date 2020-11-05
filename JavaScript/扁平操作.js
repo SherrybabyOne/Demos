@@ -25,10 +25,19 @@ const fn = arr => {
 }
 fn(arr);
 
+const flat6 = arr => {
+  while (arr.some(Array.isArray)) {
+    arr = [].concat(...arr);
+  }
+  return arr;
+}
+const res6 = flat6(arr);
+
 console.log(
   res1,
   res2,
   res3,
   flatten(arr),
   res5,
+  res6,
 );
