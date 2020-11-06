@@ -77,7 +77,7 @@ class Promise {
             setTimeout(() => {
               const result = onRejected(self.reason);
               // 不同点：此时是reject
-              result instanceof Promise ? result.then(resolve, reject) : reject(result);
+              result instanceof Promise ? result.then(resolve, reject) : resolve(result);
             })
           } catch(e) {
             reject(e);
